@@ -1,0 +1,31 @@
+version: '3.5'
+services: 
+    debian:
+        build:
+            context: archivos_docker/debian_config
+        container_name: debian
+        depends_on: 
+            - mysql
+        ports:
+            - 8000:8097
+        volumes:
+            - ./app_local_test:/Aplicaciones/prueba_tecnica
+        networks:
+            - prueba_tecnica_network
+        command: tail -f /dev/null
+    mysql:
+        build: 
+            context: archivos_docker/mysql_config
+        container_name: mysql
+        ports: 
+            - 3520:3306
+        environment: 
+            TZ: "America/Bogota"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_ROOT_PASSWORD: ""
+        networks: 
+            - prueba_tecnica_network
+
+networks: 
+    prueba_tecnica_network:
+        external: true

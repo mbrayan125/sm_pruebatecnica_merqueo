@@ -1,0 +1,2 @@
+FROM prueba_tecnica:v_2
+WORKDIR /Aplicaciones/prueba_tecnica

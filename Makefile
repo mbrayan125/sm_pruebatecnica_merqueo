@@ -1,5 +1,5 @@
 DEBIAN = debian
-MYSQL = mysql
+MYSQL = mysql-server
 
 cs: ## Lista los contenedores que se están ejecutando
 	docker ps -a

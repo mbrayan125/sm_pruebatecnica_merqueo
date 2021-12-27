@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/create/team', 'Simulator\FootballController@createTeam');
+
+Route::get('/create/player', 'Simulator\FootballController@createPlayer');
+
+Route::get('/load/teams', 'Simulator\FootballController@loadTeamsFromFile');
+
+Route::get('/load/players', 'Simulator\FootballController@loadPlayersFromFile');

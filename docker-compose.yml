@@ -5,18 +5,21 @@ services:
             context: archivos_docker/debian_config
         container_name: debian
         depends_on: 
-            - mysql
+            - mysql-server
         ports:
             - 8000:8097
         volumes:
-            - ./app_local_test:/Aplicaciones/prueba_tecnica
+            - ./fuente_codigo:/Aplicaciones/prueba_tecnica
+            - /home/bstiven/Documentos/:/Aplicaciones/archivos
         networks:
             - prueba_tecnica_network
         command: tail -f /dev/null
-    mysql:
+        links:
+            - mysql-server:mysql-server
+    mysql-server:
         build: 
             context: archivos_docker/mysql_config
-        container_name: mysql
+        container_name: mysql-server
         ports: 
             - 3520:3306
         environment: 

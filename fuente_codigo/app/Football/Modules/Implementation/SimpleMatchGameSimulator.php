@@ -7,7 +7,6 @@ use App\Football\Models\MatchGame;
 use App\Football\Models\Team;
 use App\Football\Repositories\MatchGameRepository;
 use App\ProjectInterfaces\FootballSimulator\MatchGameSimulatorInterface;
-use Exception;
 use stdClass;
 
 class SimpleMatchGameSimulator implements MatchGameSimulatorInterface

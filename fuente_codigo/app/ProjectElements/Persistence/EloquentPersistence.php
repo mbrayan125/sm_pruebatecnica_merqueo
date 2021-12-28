@@ -6,8 +6,6 @@ use App\ProjectInterfaces\PersistenceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Iterator;
-use Traversable;
 
 class EloquentPersistence implements PersistenceInterface
 {

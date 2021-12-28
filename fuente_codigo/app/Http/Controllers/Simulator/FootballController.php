@@ -2,24 +2,11 @@
 
 namespace App\Http\Controllers\Simulator;
 
-use App\Football\Managers\ChampionshipManager;
-use App\Football\Managers\MatchGameManager;
-use App\Football\Managers\PhaseGroupManager;
-use App\Football\Managers\PhaseManager;
-use App\Football\Managers\TeamManager;
-use App\Football\Managers\TeamPhaseGroupManager;
 use App\Football\Models\Championship;
-use App\Football\Models\Phase;
-use App\Football\Models\Player;
-use App\Football\Models\Team;
 use App\Football\Modules\Football\ChampionshipSimulator;
 use App\Football\Modules\Football\SimulatorUploadModule;
-use App\Football\Modules\Implementation\SimpleMatchGameSimulator;
-use App\Football\Modules\Implementation\WorldCupChampionshipMaker;
 use App\Http\Controllers\Controller;
 use App\ProjectElements\AppDispatcher;
-use App\ProjectHelpers\Files\ClassHelper;
-use ReflectionClass;
 
 class FootballController extends Controller
 {

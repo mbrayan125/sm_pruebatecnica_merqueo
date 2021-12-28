@@ -3,7 +3,6 @@
 namespace App\Football\Managers;
 
 use App\Football\Models\MatchGame;
-use App\Football\Models\Phase;
 use App\ProjectElements\Managers\ClassManager;
 
 class MatchGameManager extends ClassManager

@@ -4,7 +4,6 @@ namespace App\Football\Modules\Football;
 
 use App\Football\Managers\PlayerManager;
 use App\Football\Managers\TeamManager;
-use App\Football\Models\Player;
 use App\Football\Models\Team;
 use App\ProjectElements\AppDispatcher;
 use Exception;

@@ -2,9 +2,6 @@
 
 namespace App\ProjectInterfaces;
 
-use Iterator;
-use Traversable;
-
 interface PersistenceInterface
 {
     public static function findBy(

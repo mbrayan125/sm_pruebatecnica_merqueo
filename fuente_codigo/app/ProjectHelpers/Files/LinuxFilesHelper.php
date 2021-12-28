@@ -1,7 +1,6 @@
 <?php
 
 namespace App\ProjectHelpers\Files;
-use Exception;
 
 class LinuxFilesHelper extends FilesHelper
 {

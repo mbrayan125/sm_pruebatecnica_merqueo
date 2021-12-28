@@ -2,7 +2,6 @@
 
 namespace App\Football\Managers;
 
-use App\Football\Models\Phase;
 use App\Football\Models\PlayerMatchLineUp;
 use App\ProjectElements\Managers\ClassManager;
 

@@ -5,7 +5,6 @@ namespace App\Football\Modules\Implementation;
 use App\Football\Models\Team;
 use App\ProjectElements\AppDispatcher;
 use App\ProjectInterfaces\FootballSimulator\ChampionshipTeamChooserInterface;
-use Exception;
 
 class BestRankTeamChooser implements ChampionshipTeamChooserInterface
 {

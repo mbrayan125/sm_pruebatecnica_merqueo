@@ -14,14 +14,11 @@ use App\Football\Models\MatchGame;
 use App\Football\Models\Phase;
 use App\Football\Models\PhaseGroup;
 use App\Football\Models\Team;
-use App\Football\Models\TeamPhaseGroup;
 use App\Football\Repositories\PhaseRepository;
 use App\Football\Repositories\TeamPhaseGroupRepository;
 use App\ProjectElements\AppDispatcher;
 use App\ProjectInterfaces\FootballSimulator\ChampionshipMakerInterface;
 use App\ProjectInterfaces\FootballSimulator\MatchGameSimulatorInterface;
-use Exception;
-use stdClass;
 
 class WorldCupChampionshipMaker implements ChampionshipMakerInterface
 {

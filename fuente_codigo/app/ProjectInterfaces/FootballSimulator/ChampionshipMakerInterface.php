@@ -5,7 +5,6 @@ namespace App\ProjectInterfaces\FootballSimulator;
 use App\Football\Models\Championship;
 use App\Football\Models\PhaseGroup;
 use App\Football\Models\Team;
-use stdClass;
 
 interface ChampionshipMakerInterface
 {

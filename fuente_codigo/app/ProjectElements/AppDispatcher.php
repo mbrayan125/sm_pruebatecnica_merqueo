@@ -29,42 +29,16 @@ class AppDispatcher
      */
     private static $filesHelper;
 
-    /**
-     * \@pendiente_documentacion_stevin
-     *
-     * @return PersistenceInterface
-     * @throws [type] Cuando ocurra alguna excepción en el procesamiento
-     *
-     * @author Stiven Mamián <brayan.mamian@makrosoft.co>
-     */
     public static function getPersistenceManager() : PersistenceInterface
     {
         return self::$persistenceManager;
     }
 
-    /**
-     * \@pendiente_documentacion_stevin
-     *
-     * @return FilesHelperInterface
-     * @throws [type] Cuando ocurra alguna excepción en el procesamiento
-     *
-     * @author Stiven Mamián <brayan.mamian@makrosoft.co>
-     */
     public static function getFilesHelper() : FilesHelperInterface
     {
         return self::$filesHelper;
     }
 
-    /**
-     * \@pendiente_documentacion_stevin
-     *
-     * @param string $context
-     *
-     * @return void
-     * @throws [type] Cuando ocurra alguna excepción en el procesamiento
-     *
-     * @author Stiven Mamián <brayan.mamian@makrosoft.co>
-     */
     public static function setUpDispatcher(string $context = "prod")
     {
         if (!in_array($context, self::$avaiableContext)) {

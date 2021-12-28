@@ -3,7 +3,6 @@
 namespace App\Football\Managers;
 
 use App\Football\Models\Player;
-use App\Football\Models\Team;
 use App\ProjectElements\AppDispatcher;
 use App\ProjectElements\Managers\ClassManager;
 use Exception;

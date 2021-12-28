@@ -2,12 +2,9 @@
 
 namespace App\Football\Modules\Football;
 
-use App\Football\Models\Championship;
-use App\Football\Models\Team;
 use App\Football\Modules\Implementation\BestRankTeamChooser;
 use App\Football\Modules\Implementation\SimpleMatchGameSimulator;
 use App\Football\Modules\Implementation\WorldCupChampionshipMaker;
-use App\Football\Repositories\MatchGameRepository;
 use App\Football\Repositories\PhaseRepository;
 use App\ProjectInterfaces\FootballSimulator\ChampionshipMakerInterface;
 use App\ProjectInterfaces\FootballSimulator\ChampionshipTeamChooserInterface;

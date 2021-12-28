@@ -8,6 +8,8 @@ run: ## Inicia los contenedores
 	docker network create prueba_tecnica_network || true
 	docker-compose up -d
 	docker exec -it ${DEBIAN} service apache2 restart
+	docker exec -it ${DEBIAN} ./Aplicaciones/installation/completeInstallation.sh
+	docker exec -it ${DEBIAN} php /Aplicaciones/prueba_tecnica artisan migrate --force
 
 stop: ## Detiene la ejecución de los contenedores
 	docker-compose stop ${DEBIAN} ${MYSQL}

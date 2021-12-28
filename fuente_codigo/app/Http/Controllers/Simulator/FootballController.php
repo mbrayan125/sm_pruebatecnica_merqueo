@@ -12,8 +12,8 @@ class FootballController extends Controller
 {
     public function loadTeamsFromFile()
     {
-        $pathCsvTeams = "/Aplicaciones/archivos/Documentos prescindibles/Test/teams.csv";
-        $pathZipFlags = "/Aplicaciones/archivos/Documentos prescindibles/Test/flags.zip";
+        $pathCsvTeams = "/Aplicaciones/uploads/teams.csv";
+        $pathZipFlags = "/Aplicaciones/uploads/flags.zip";
 
         SimulatorUploadModule::loadTeamsFromCsv(
             $pathCsvTeams,
@@ -23,8 +23,8 @@ class FootballController extends Controller
 
     public function loadPlayersFromFile()
     {
-        $pathCsvPlayers = "/Aplicaciones/archivos/Documentos prescindibles/Test/players.csv";
-        $pathZipPhotos = "/Aplicaciones/archivos/Documentos prescindibles/Test/photos.zip";
+        $pathCsvPlayers = "/Aplicaciones/uploads/players.csv";
+        $pathZipPhotos = "/Aplicaciones/uploads/photos.zip";
 
         SimulatorUploadModule::loadPlayersFromCsv(
             $pathCsvPlayers,

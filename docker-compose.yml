@@ -10,7 +10,8 @@ services:
             - 8000:8097
         volumes:
             - ./fuente_codigo:/Aplicaciones/prueba_tecnica
-            - /home/bstiven/Documentos/:/Aplicaciones/archivos
+            - ./uploads:/Aplicaciones/uploads
+            - ./instalacion:/Aplicaciones/installation
         networks:
             - prueba_tecnica_network
         command: tail -f /dev/null

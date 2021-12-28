@@ -1,2 +1,2 @@
-FROM prueba_tecnica:v_2
+FROM prueba_tecnica:v_3
 WORKDIR /Aplicaciones/prueba_tecnica

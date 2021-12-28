@@ -23,7 +23,8 @@ class MemoryPersistence implements PersistenceInterface
         array $parameters = array(),
         array $orderBy = array()
     ): ?object {
-        return new stdClass();
+        
+        return null;
     }
 
     public static function saveEntity(

@@ -49,6 +49,7 @@ class FootballController extends Controller
 
     public function viewSimulation($idChampionship)
     {
+        $report = array();
         $persistenceManager = AppDispatcher::getPersistenceManager();
         $championship = $persistenceManager::findOneBy(
             Championship::class,
@@ -56,9 +57,10 @@ class FootballController extends Controller
                 [ "id", "=", $idChampionship]
             ]
         );
-        $simulator = new ChampionshipSimulator();
-        $report = $simulator->makeReport($championship);
-
+        if ($championship) {
+            $simulator = new ChampionshipSimulator();
+            $report = $simulator->makeReport($championship);
+        }
         $this->addDefaultHelp($report);
         return implode("<br>", $report);
     }

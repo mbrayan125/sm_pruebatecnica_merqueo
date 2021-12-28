@@ -4,6 +4,7 @@ namespace App\ProjectElements;
 
 use App\ProjectElements\Persistence\EloquentPersistence;
 use App\ProjectElements\Persistence\MemoryPersistence;
+use App\ProjectHelpers\Files\FakerFilesHelper;
 use App\ProjectHelpers\Files\LinuxFilesHelper;
 use App\ProjectInterfaces\Helpers\FilesHelperInterface;
 use App\ProjectInterfaces\PersistenceInterface;
@@ -52,7 +53,7 @@ class AppDispatcher
 
         if ($context == "test") {
             self::$persistenceManager = new MemoryPersistence();
-            self::$filesHelper = new LinuxFilesHelper();
+            self::$filesHelper = new FakerFilesHelper();
         }
     }
 }

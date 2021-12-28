@@ -61,6 +61,7 @@ class EloquentPersistence implements PersistenceInterface
 
         self::validateLaravelEntity($entity);
         $entity->save();
+        $entity->fresh();
     }
 
     public static function refreshEntity(object $entity): void

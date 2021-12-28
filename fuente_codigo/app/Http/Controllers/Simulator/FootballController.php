@@ -15,6 +15,7 @@ use App\Football\Models\Team;
 use App\Football\Modules\Football\ChampionshipSimulator;
 use App\Football\Modules\Football\SimulatorUploadModule;
 use App\Football\Modules\Implementation\SimpleMatchGameSimulator;
+use App\Football\Modules\Implementation\WorldCupChampionshipMaker;
 use App\Http\Controllers\Controller;
 use App\ProjectElements\AppDispatcher;
 use App\ProjectHelpers\Files\ClassHelper;
@@ -44,140 +45,93 @@ class FootballController extends Controller
         );
     }
 
-    public function startSimulation()
+    public function listSimulations()
     {
         $persistenceManager = AppDispatcher::getPersistenceManager();
-        $team1 = $persistenceManager::findOneBy(
-            Team::class,
-            [
-                [ "id", "=", 2]
-            ]
-        );
-        $team2 = $persistenceManager::findOneBy(
-            Team::class,
-            [
-                [ "id", "=", 25]
-            ]
-        );
-        $matchSimulator = new SimpleMatchGameSimulator();
-        $result = (array) $matchSimulator::simulateMatch($team1, $team2);
-
-        echo "<pre>";
-        print_r($result);
-        echo "</pre>";
-
-        return;
-       $simulator = new ChampionshipSimulator();
-       $simulator->startSimulation(
-           "Qatar",
-           2022,
-           8
-       );
-    }
-
-    public function utileCheck()
-    {
-        $persistenceManager = AppDispatcher::getPersistenceManager();
-
-        $print = array();
-        $championship = ChampionshipManager::createEntity([
-            "name" => "Qatar World Cup 2018",
-            "championshipYear" => 2018,
-            "championshipMonth" => 6
-        ]);
-
-        //$print[] = $championship->getName();
-        //$persistenceManager->saveEntity($championship);
-
-        $phase = PhaseManager::createEntity([
-            "orderPhase" => 1,
-            "name" => "Groups stage",
-            "championship" => 1
-        ]);
-
-        //$print[] = $phase->getName();
-        //$persistenceManager->saveEntity($phase);
-
-        $phaseGroup = PhaseGroupManager::createEntity([
-            "name" => "Final Octogonal",
-            "phase" => 1
-        ]);
-
-        //$print[] = $phaseGroup->getName();
-        //$persistenceManager->saveEntity($phaseGroup);
-
-        
-        $teamSelected = $persistenceManager::findOneBy(
-            Team::class,
-            array(
-                [ "country", "=", "Portugal" ]
-            )
-        );
-        $teamPhaseGroup = TeamPhaseGroupManager::createEntity([
-            "team" => $teamSelected,
-            "phaseGroup" => 1
-        ]);
-
-        //$print[] = "Phase group created";
-        //$print[] = "";
-
-        
-        //$persistenceManager->saveEntity($teamPhaseGroup);
-
-        $championship = $persistenceManager::findOneBy(
+        $championships = $persistenceManager::findBy(
             Championship::class
         );
-        $print[] = $championship->getName();
 
-        $matchGames = array();
-        $phases = $championship->getPhases();
-        foreach ($phases as $phase) {
-            $print[] = $phase->getName();
-            $phaseGroups = $phase->getPhaseGroups();
-            $fecha = 1;
-            foreach ($phaseGroups as $phaseGroup) {
-                $print[] = $phaseGroup->getName();
-                $teamsPhaseGroup = $phaseGroup->getTeamsPhaseGroups();
-                foreach($teamsPhaseGroup as $localTeamPhaseGroup) {
-                    $fecha = 1;
-                    $localTeam = $localTeamPhaseGroup->getTeam();
-
-                    foreach($teamsPhaseGroup as $visitorTeamPhaseGroup) {
-                        $visitorTeam = $visitorTeamPhaseGroup->getTeam();
-                        if ($localTeam->getId() == $visitorTeam->getId()) {
-                            continue;
-                        }
-                        $match = MatchGameManager::createEntity([
-                            "matchNumber" => 0,
-                            "championship" => $championship,
-                            "localTeam" => $localTeam,
-                            "visitorTeam" => $visitorTeam,
-                            "phase" => $phase
-                        ]);
-                        $matchGames[$fecha][] = $match;
-                    }
-                }
-                $fecha ++;
-            }
+        $return = array();
+        foreach ($championships as $championship) {
+            $return[] = " > id: " . $championship->getId() . " " .$championship->getName();
         }
+        $this->addDefaultHelp($return);
+        return implode("<br>", $return);
+    }
 
-        foreach ($matchGames as $fecha => $matches) {
-            $print[] = "--";
-            $print[] = "Fecha $fecha";
-            $print[] = "--";
-            foreach($matches as $match) {
-                $localTeam = $match->getLocalTeam();
-                $visitorTeam = $match->getVisitorTeam();
-                $print[] = "Match " . $localTeam->getCountry() . " vs " .$visitorTeam->getCountry();
-            }
-        }
+    public function viewSimulation($idChampionship)
+    {
+        $persistenceManager = AppDispatcher::getPersistenceManager();
+        $championship = $persistenceManager::findOneBy(
+            Championship::class,
+            [
+                [ "id", "=", $idChampionship]
+            ]
+        );
+        $simulator = new ChampionshipSimulator();
+        $report = $simulator->makeReport($championship);
 
+        $this->addDefaultHelp($report);
+        return implode("<br>", $report);
+    }
 
-        print(" > " . implode("<br> > ", $print));
-        
-        /*
-        $persistenceManager::saveEntity($championship);
-        */
+    public function newSimulation()
+    {
+        $simulationId = uniqid("simulation_");
+        $simulator = new ChampionshipSimulator();
+        $report = $simulator->startSimulation(
+            $simulationId,
+            2022,
+            8
+        );
+
+        $this->addDefaultHelp($report);
+        return implode("<br>", $report);
+    }
+
+    public function simulationHelp()
+    {
+        $return = array();
+        $return[] = "";
+        $return[] = "Opciones";
+        $return[] = "";
+        $return[] = (" > Para visualizar los resultados de una simulación => /simulation/view/{id}");
+        $return[] = (" > Para generar una simulación desde cero => /simulation/new");
+        $return[] = (" > Para listar las simulaciones generadas => /simulation/list");
+        $return[] = (" > Para cargar equipos desde un archivo csv => /simulation/load/help");
+        $this->addDefaultHelp($return);
+        return implode("<br>", $return);
+    }
+
+    public function simulationLoadHelp()
+    {
+        $return = array();
+        $return[] = "";
+        $return[] = "Opciones";
+        $return[] = "";
+        $return[] = (" > Para cargar equipos desde un csv => /simulation/load/teams ");
+        $return[] = (" * Esta acción cargará por defecto la información contenida en los archivos ");
+        $return[] = (" * teams.csv (con la información de los equipos) y flags.zip (con las banderas de");
+        $return[] = (" * cada equipo ubicados en la dirección relativa <path repository>/archivos/");
+        $return[] = (" * artefactos/uploads, si se desea usar otro archivo csv entonces reeemplazar");
+        $return[] = (" * cada uno de estos con información válida");
+        $return[] = "";
+        $return[] = (" > Para cargar jugadores desde un csv => /simulation/load/players ");
+        $return[] = (" * Esta acción cargará por defecto la información contenida en los archivos ");
+        $return[] = (" * players.csv (con la información de los equipos) y photos.zip (con las fotos de");
+        $return[] = (" * cada jugador ubicados en la dirección relativa <path repository>/archivos/");
+        $return[] = (" * artefactos/uploads, si se desea usar otro archivo csv entonces reeemplazar");
+        $return[] = (" * cada uno de estos con información válida");
+        $this->addDefaultHelp($return);
+        return implode("<br>", $return);
+    }
+
+    private function addDefaultHelp(array &$array) 
+    {
+        $array[] = "";
+        $array[] = "";
+        $array[] = (" > Ver todos los comandos => /simulation/help");
 
     }
 }

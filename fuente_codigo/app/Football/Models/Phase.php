@@ -29,12 +29,6 @@ class Phase extends AppModel
 
     /**
      * @var object
-     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\MatchGame", "inversedBy": "phase_id", "mappedBy": "id"}
-     */
-    protected $matchGames;
-
-    /**
-     * @var object
      * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\PhaseGroup", "inversedBy": "phase_id", "mappedBy": "id"}
      */
     protected $phaseGroups;

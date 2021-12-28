@@ -60,7 +60,7 @@ class GenericModel implements ModelInterface
         return $this;
     }
 
-    public function handleRelationShipSet(string $relationshipJson, $value)
+    public function handleRelationShipSet(string $relationshipJson, $property, $value)
     {
         throw new Exception(sprintf(
             "No strategy for relationship set implemented on",

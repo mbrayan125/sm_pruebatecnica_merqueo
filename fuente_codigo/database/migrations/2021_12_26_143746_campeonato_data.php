@@ -71,10 +71,23 @@ class CampeonatoData extends Migration
             $table->bigIncrements('id');
             $table->integer("matchNumber", false, true);
             $table->string("stadium", 512);
+            $table->string("wayToWin", 512)->nullable();
+            $table->integer("localGoals", false, true);
+            $table->integer("localYellowCards", false, true);
+            $table->integer("localRedCards", false, true);
+            $table->integer("visitorGoals", false, true);
+            $table->integer("visitorYellowCards", false, true);
+            $table->integer("visitorRedCards", false, true);
             $table->unsignedBigInteger("championship_id");
-            $table->unsignedBigInteger("phase_id");
+            $table->unsignedBigInteger("phasegroup_id");
+            $table->unsignedBigInteger("local_team_id");
+            $table->unsignedBigInteger("visitor_team_id");
+            $table->unsignedBigInteger("winner_team_id")->nullable(true);
             $table->foreign("championship_id")->references("id")->on("championships");
-            $table->foreign("phase_id")->references("id")->on("phases");
+            $table->foreign("phasegroup_id")->references("id")->on("phase_groups");
+            $table->foreign("local_team_id")->references("id")->on("teams");
+            $table->foreign("visitor_team_id")->references("id")->on("teams");
+            $table->foreign("winner_team_id")->references("id")->on("teams");
         });
 
         Schema::create('match_cards', function (Blueprint $table) {

@@ -22,6 +22,41 @@ class MatchGame extends AppModel
     protected $matchNumber;
 
     /**
+     * @var int
+     */
+    protected $localGoals;
+
+    /**
+     * @var int
+     */
+    protected $visitorGoals;
+
+    /**
+     * @var int
+     */
+    protected $localYellowCards;
+
+    /**
+     * @var int
+     */
+    protected $visitorYellowCards;
+
+    /**
+     * @var int
+     */
+    protected $localRedCards;
+
+    /**
+     * @var int
+     */
+    protected $visitorRedCards;
+    
+    /**
+     * @var string
+     */
+    protected $wayToWin;
+
+    /**
      * @var object
      * @relationship { "type": "many_to_one", "targetClass": "\\App\\Football\\Models\\Team", "inversedBy": "id", "mappedBy": "local_team_id"}
      */
@@ -32,6 +67,13 @@ class MatchGame extends AppModel
      * @relationship { "type": "many_to_one", "targetClass": "\\App\\Football\\Models\\Team", "inversedBy": "id", "mappedBy": "visitor_team_id"}
      */
     protected $visitorTeam;
+
+    /**
+     * @var object
+     * @relationship { "type": "many_to_one", "targetClass": "\\App\\Football\\Models\\Team", "inversedBy": "id", "mappedBy": "winner_team_id"}
+     */
+    protected $winnerTeam;
+
 
     /**
      * @var object
@@ -47,9 +89,9 @@ class MatchGame extends AppModel
 
     /**
      * @var object
-     * @relationship { "type": "many_to_one", "targetClass": "\\App\\Football\\Models\\Phase", "inversedBy": "id", "mappedBy": "phase_id"}
+     * @relationship { "type": "many_to_one", "targetClass": "\\App\\Football\\Models\\PhaseGroup", "inversedBy": "id", "mappedBy": "phasegroup_id"}
      */
-    protected $phase;
+    protected $phaseGroup;
 
     /**
      * @var object

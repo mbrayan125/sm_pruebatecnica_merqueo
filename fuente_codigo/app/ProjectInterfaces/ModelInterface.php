@@ -11,5 +11,5 @@ interface ModelInterface
     public function handleGenericGet(string $property);
     public function handleRelationshipGet(string $relationshipJson);
     public function handleGenericSet(string $property, $value);
-    public function handleRelationshipSet(string $relationshipJson, $value);
+    public function handleRelationshipSet(string $relationshipJson, $property, $value);
 }

@@ -2,13 +2,19 @@
 
 namespace App\ProjectInterfaces\FootballSimulator;
 
+use App\Football\Models\Championship;
+use App\Football\Models\MatchGame;
 use App\Football\Models\Team;
 use stdClass;
 
 interface MatchGameSimulatorInterface
 {
     public static function simulateMatch(
-        Team $localTeam,
-        Team $visitorTeam
+        MatchGame $match
+    ): stdClass;
+
+    public static function calculateChampionshipStats(
+        Team $team, 
+        Championship $championship
     ): stdClass;
 }

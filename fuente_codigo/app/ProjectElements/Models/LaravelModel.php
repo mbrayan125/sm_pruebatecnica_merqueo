@@ -67,6 +67,10 @@ abstract class LaravelModel extends Model implements ModelInterface
         $selfPropertyGet = "get" . $realationship->mappedBy;
         $selfProperty = $this->__call($selfPropertyGet, []);
 
+        if (is_null($selfProperty)) {
+            return null;
+        }
+
         $relatedClass = $persistenceManager::findBy(
             $realationship->targetClass,
             array(
@@ -98,7 +102,7 @@ abstract class LaravelModel extends Model implements ModelInterface
         return $this;
     }
 
-    public function handleRelationshipSet(string $relationshipJson, $value)
+    public function handleRelationshipSet(string $relationshipJson, $property, $value)
     {
         $realationship = json_decode($relationshipJson);
         if (! $realationship) {
@@ -130,7 +134,13 @@ abstract class LaravelModel extends Model implements ModelInterface
         }
 
         if (is_null($foreignValue) && $continueSearch) {
-            throw new Exception("Data type invalid for set relationship option");
+            throw new Exception(sprintf(
+                "%s Data type %s invalid for set relationship %s option on set %s",
+                get_class($this),
+                is_object($value) ? get_class($value) : gettype($value),
+                $realationship->targetClass,
+                $property
+            ));
         }
 
         return $this->handleGenericSet(

@@ -51,6 +51,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 App\ProjectElements\AppDispatcher::setUpDispatcher();
+set_time_limit(300);
 
 $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()

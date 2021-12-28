@@ -13,7 +13,7 @@ class MatchGameManager extends ClassManager
         "localTeam",
         "visitorTeam",
         "championship",
-        "phase"
+        "phaseGroup"
     );
 
     public static function createEntity(array $data): object
@@ -27,10 +27,16 @@ class MatchGameManager extends ClassManager
         $data = (object) $data;
         $newMatchGameObject = new MatchGame();
         $newMatchGameObject->setMatchNumber($data->matchNumber);
+        $newMatchGameObject->setLocalGoals(0);
+        $newMatchGameObject->setLocalYellowCards(0);
+        $newMatchGameObject->setLocalRedCards(0);
+        $newMatchGameObject->setVisitorGoals(0);
+        $newMatchGameObject->setVisitorYellowCards(0);
+        $newMatchGameObject->setVisitorRedCards(0);
         $newMatchGameObject->setLocalTeam($data->localTeam);
         $newMatchGameObject->setVisitorTeam($data->visitorTeam);
         $newMatchGameObject->setChampionship($data->championship);
-        $newMatchGameObject->setPhase($data->phase);
+        $newMatchGameObject->setPhaseGroup($data->phaseGroup);
         $newMatchGameObject->setStadium(self::getRandomStadium());
 
         return $newMatchGameObject;

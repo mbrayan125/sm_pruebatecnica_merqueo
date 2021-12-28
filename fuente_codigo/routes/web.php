@@ -15,14 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/create/team', 'Simulator\FootballController@createTeam');
+Route::get('/simulation/load/teams', 'Simulator\FootballController@loadTeamsFromFile');
 
-Route::get('/create/player', 'Simulator\FootballController@createPlayer');
+Route::get('/simulation/load/players', 'Simulator\FootballController@loadPlayersFromFile');
 
-Route::get('/load/teams', 'Simulator\FootballController@loadTeamsFromFile');
+Route::get('/simulation/view/{id}', 'Simulator\FootballController@viewSimulation');
 
-Route::get('/load/players', 'Simulator\FootballController@loadPlayersFromFile');
+Route::get('/simulation/list', 'Simulator\FootballController@listSimulations');
 
-Route::get('/start/simulation', 'Simulator\FootballController@startSimulation');
+Route::get('/simulation/new', 'Simulator\FootballController@newSimulation');
 
-Route::get('/utile/check', 'Simulator\FootballController@utileCheck');
+Route::get('/simulation/help', 'Simulator\FootballController@simulationHelp');
+
+Route::get('/simulation/load/help', 'Simulator\FootballController@simulationLoadHelp');

@@ -9,7 +9,7 @@ use Exception;
 
 class BestRankTeamChooser implements ChampionshipTeamChooserInterface
 {
-    public static function selectChampionshipTeams(int $amountTeams): array
+    public static function selectChampionshipTeams(int $amountTeams)
     {
         $persistenceManager = AppDispatcher::getPersistenceManager();
         return $persistenceManager::findBy(

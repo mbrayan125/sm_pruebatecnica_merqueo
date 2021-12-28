@@ -102,7 +102,7 @@ abstract class ClassHelper
         );
 
         if ($relationshipInfo) {
-            return $entity->handleRelationshipSet($relationshipInfo, $value);
+            return $entity->handleRelationshipSet($relationshipInfo, $property, $value);
         }
 
         return $entity->handleGenericSet($property, $value);
@@ -124,7 +124,8 @@ abstract class ClassHelper
         }
         if ($mandatoryProperty && !property_exists($entity, $property)) {
             throw new Exception(sprintf(
-                "Attempted to call %s method over a non-existent property %s",
+                "%s attempted to call %s method over a non-existent property %s",
+                get_class($entity),
                 $methodType,
                 $property
             ));

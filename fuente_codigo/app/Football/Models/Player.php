@@ -2,52 +2,65 @@
 
 namespace App\Football\Models;
 
-use App\ProjectElements\Persistence\LaravelModel;
+use App\ProjectElements\Models\AppModel;
 
-class Player extends LaravelModel
+class Player extends AppModel
 {
     /**
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $dorsalName;
+    protected $dorsalName;
 
     /**
      * @var int
      */
-    private $dorsalNumber;
+    protected $dorsalNumber;
 
     /**
      * @var int
      */
-    private $birthYear;
+    protected $birthYear;
 
     /**
      * @var int
      */
-    private $birthMonth;
+    protected $birthMonth;
 
     /**
      * @var string
      */
-    private $gamePosition;
+    protected $gamePosition;
 
     /**
      * @var string
      */
-    private $photoPath;
+    protected $photoPath;
 
     /**
-     * @var int
+     * @var object
+     * @relationship { "type": "many_to_one", "targetClass": "\\App\\Football\\Models\\Team", "inversedBy": "id", "mappedBy": "team_id"}
      */
-    private $team_id;
+    protected $team;
+
+    /**
+     * @var object
+     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\MatchCard", "inversedBy": "player_id", "mappedBy": "id"}
+     */
+    protected $cards;
+
+    /**
+     * @var object
+     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\MatchGoal", "inversedBy": "player_id", "mappedBy": "id"}
+     */
+    protected $goals;
 }

@@ -6,10 +6,10 @@ use App\Football\Models\Player;
 use App\Football\Models\Team;
 use App\ProjectElements\AppDispatcher;
 use App\ProjectElements\Managers\ClassManager;
+use Exception;
 
 class PlayerManager extends ClassManager
 {
-    private static $classPath = "App\Football\Models\Player";
     private static $mandatoryData = [
         "name",
         "dorsalName",
@@ -18,7 +18,7 @@ class PlayerManager extends ClassManager
         "birthMonth",
         "gamePosition",
         "photoPath",
-        "team_id"
+        "team"
     ];
     private static $gamePositions = [
         "goalkeeper",
@@ -31,7 +31,14 @@ class PlayerManager extends ClassManager
         array $data
     ): object {
 
-        self::checkDataItems(self::$classPath, $data, self::$mandatoryData);
+        $persistenceManager = AppDispatcher::getPersistenceManager();
+        
+        self::checkDataItems(
+            Player::class, 
+            $data, 
+            self::$mandatoryData
+        );
+
         $data = (object) $data;
         $newPlayerObject = new Player();
         $newPlayerObject->setName($data->name);
@@ -41,11 +48,29 @@ class PlayerManager extends ClassManager
         $newPlayerObject->setBirthMonth($data->birthMonth);
         $newPlayerObject->setGamePosition($data->gamePosition);
         $newPlayerObject->setPhotoPath($data->photoPath);
-        $newPlayerObject->setTeam_id($data->team_id);
+        $newPlayerObject->setTeam($data->team);
+
+        $currentPlayer = $persistenceManager::findBy(
+            Player::class,
+            array(
+                [ "team_id", "=", $newPlayerObject->getTeam()->getId() ],
+                [ "dorsalName", "=", $newPlayerObject->getDorsalName() ]
+            )
+        );
+
+        $playersFound = sizeof($currentPlayer);
+        if ($playersFound > 0) {
+            throw new Exception(sprintf(
+                "Player %s from %s already exists", 
+                $newPlayerObject->getName(),
+                $newPlayerObject->getTeam()->getCountry()
+            ));
+        }
+        
         return $newPlayerObject;
     }
 
-    public static function moveOnFlagPath(
+    private static function moveOnPhoto(
         string $originalPath,
         string $teamCountry,
         string $playerName

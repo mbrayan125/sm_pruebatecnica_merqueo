@@ -4,7 +4,7 @@ namespace App\Football\Models;
 
 use App\ProjectElements\Models\AppModel;
 
-class MatchCard extends AppModel
+class PlayerMatchLineUp extends AppModel
 {
     /**
      * @var int
@@ -14,17 +14,12 @@ class MatchCard extends AppModel
     /**
      * @var string
      */
-    protected $type;
+    protected $playerBand;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $minute;
-
-    /**
-     * @var int
-     */
-    protected $half;
+    protected $formationType;
 
     /**
      * @var object

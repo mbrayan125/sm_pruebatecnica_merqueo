@@ -3,10 +3,11 @@
 namespace App\ProjectElements\Persistence;
 
 use App\ProjectInterfaces\PersistenceInterface;
+use stdClass;
 
 class MemoryPersistence implements PersistenceInterface
 {
-    public static function retrieveEntities(
+    public static function findBy(
         string $classPath,
         array $parameters = array(),
         array $orderBy = array(),
@@ -16,10 +17,23 @@ class MemoryPersistence implements PersistenceInterface
 
         return array();
     }
+    
+    public static function findOneBy(
+        string $classPath, 
+        array $parameters = array(),
+        array $orderBy = array()
+    ): ?object {
+        return new stdClass();
+    }
 
     public static function saveEntity(
         object $entity
     ): void {
+        
+    }
+
+    public static function refreshEntity(object $entity): void
+    {
         
     }
 }

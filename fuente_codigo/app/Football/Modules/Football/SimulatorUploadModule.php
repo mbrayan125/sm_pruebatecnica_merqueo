@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Football\Modules;
+namespace App\Football\Modules\Football;
 
 use App\Football\Managers\PlayerManager;
 use App\Football\Managers\TeamManager;
@@ -9,12 +9,14 @@ use App\Football\Models\Team;
 use App\ProjectElements\AppDispatcher;
 use Exception;
 
-class FootballSimulatorUploadModule
+class SimulatorUploadModule
 {
     public static function loadTeamsFromCsv(
         string $csvTeamsPath,
         string $flagsPath
     ) {
+
+        $persistenceManager = AppDispatcher::getPersistenceManager();
         $filesHelper = AppDispatcher::getFilesHelper();
         $filesHelper::validateFileAccess($csvTeamsPath, $flagsPath);
 
@@ -46,43 +48,18 @@ class FootballSimulatorUploadModule
                     $flag
                 );
 
-                self::addNewTeam([
+                $newTeam = TeamManager::createEntity([
                     "country"       => $country,
                     "flag"          => $pathToFlag,
                     "rank"          => $rank,
                     "nationality"   => $nationality
                 ]);
+                $persistenceManager::saveEntity($newTeam);
+
             } catch (Exception $ex) {
                 continue;
             }
         }
-    }
-
-    public static function addNewTeam(array $data)
-    {
-        $persistenceManager = AppDispatcher::getPersistenceManager();
-
-        $loadedTeam = TeamManager::createEntity($data);
-        $currentTeam = $persistenceManager::retrieveEntities(
-            Team::class,
-            array(
-                [ "country", "=", $loadedTeam->getCountry() ]
-            )
-        );
-        $teamsFound = sizeof($currentTeam);
-        if ($teamsFound > 0) {
-            throw new Exception(sprintf(
-                "Team %s already exists", 
-                $loadedTeam->getCountry()
-            ));
-        }
-
-        $finalFlagPath = TeamManager::moveOnFlagPath(
-            $loadedTeam->getFlag(), 
-            $loadedTeam->getCountry()
-        );
-        $loadedTeam->setFlag($finalFlagPath);
-        $persistenceManager::saveEntity($loadedTeam);
     }
 
     public static function loadPlayersFromCsv(
@@ -117,7 +94,7 @@ class FootballSimulatorUploadModule
                 $gamePosition = $dataCsv[6];
                 $photo = $dataCsv[7];
 
-                $targetTeams = $persistenceManager::retrieveEntities(
+                $targetTeams = $persistenceManager::findBy(
                     Team::class,
                     array(
                         [ "country", "=", $team ]
@@ -141,7 +118,7 @@ class FootballSimulatorUploadModule
                     $photo
                 );
 
-                self::addNewPlayer([
+                $newPlayer = PlayerManager::createEntity([
                     "name"          => $name,
                     "dorsalName"    => $dorsalName,
                     "dorsalNumber"  => $dorsalNumber,
@@ -149,58 +126,14 @@ class FootballSimulatorUploadModule
                     "birthMonth"    => $birthMonth,
                     "gamePosition"  => $gamePosition,
                     "photoPath"     => $pathToPhoto,
-                    "team_id"       => $team
+                    "team"          => $team
                 ]);
+                $persistenceManager::saveEntity($newPlayer);
+
+
             } catch (Exception $ex) {
-                
                 continue;
             }
         }
-    }
-
-    public static function addNewPlayer(array $data) 
-    {
-        $persistenceManager = AppDispatcher::getPersistenceManager();
-
-        $loadedPlayer = PlayerManager::createEntity($data);
-        $currentPlayer = $persistenceManager::retrieveEntities(
-            Player::class,
-            array(
-                [ "team_id", "=", $loadedPlayer->getTeam_id() ],
-                [ "name", "=", $loadedPlayer->getName() ],
-                [ "dorsalName", "=", $loadedPlayer->getDorsalName() ]
-            )
-        );
-        $targetTeams = $persistenceManager::retrieveEntities(
-            Team::class,
-            array(
-                [ "id", "=", $loadedPlayer->getTeam_id()]
-            )
-        );
-        if (sizeof($targetTeams) != 1) {
-            throw new Exception(sprintf(
-                "Team %d not found or found multiple teams",
-                $loadedPlayer->getTeam_id()
-            ));
-        }
-
-        $targetTeam = $targetTeams[0];
-
-        $playersFound = sizeof($currentPlayer);
-        if ($playersFound > 0) {
-            throw new Exception(sprintf(
-                "Player %s from %s already exists", 
-                $loadedPlayer->getName(),
-                $targetTeam->getCountry()
-            ));
-        }
-
-        $finalPhotoPath = PlayerManager::moveOnFlagPath(
-            $loadedPlayer->getPhotoPath(), 
-            $targetTeam->getCountry(),
-            $loadedPlayer->getName()
-        );
-        $loadedPlayer->setPhotoPath($finalPhotoPath);
-        $persistenceManager::saveEntity($loadedPlayer);
     }
 }

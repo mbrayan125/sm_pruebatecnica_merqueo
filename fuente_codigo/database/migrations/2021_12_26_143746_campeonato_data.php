@@ -13,12 +13,7 @@ class CampeonatoData extends Migration
      */
     public function up()
     {
-        Schema::create('championships', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string("name", 128);
-            $table->integer("championshipYear", false, true);
-            $table->integer("championshipMonth", false, true);
-        });
+
 
         Schema::create('teams', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -40,6 +35,78 @@ class CampeonatoData extends Migration
             $table->unsignedBigInteger("team_id");
             $table->foreign("team_id")->references("id")->on("teams");
         });
+        
+        Schema::create('championships', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string("name", 128);
+            $table->integer("championshipYear", false, true);
+            $table->integer("championshipMonth", false, true);
+        });
+
+        Schema::create('phases', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer("orderPhase", false, true);
+            $table->string("name", 128);
+            $table->unsignedBigInteger("championship_id");
+            $table->foreign("championship_id")->references("id")->on("championships");
+        });
+
+        Schema::create('phase_groups', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string("name", 128);
+            $table->unsignedBigInteger("phase_id");
+            $table->foreign("phase_id")->references("id")->on("phases");
+        });
+
+        Schema::create('team_phase_groups', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer("points", false, true);
+            $table->unsignedBigInteger("phasegroup_id");
+            $table->unsignedBigInteger("team_id");
+            $table->foreign("phasegroup_id")->references("id")->on("phase_groups");
+            $table->foreign("team_id")->references("id")->on("teams");
+        });
+
+        Schema::create('match_games', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer("matchNumber", false, true);
+            $table->string("stadium", 512);
+            $table->unsignedBigInteger("championship_id");
+            $table->unsignedBigInteger("phase_id");
+            $table->foreign("championship_id")->references("id")->on("championships");
+            $table->foreign("phase_id")->references("id")->on("phases");
+        });
+
+        Schema::create('match_cards', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string("type", 512);
+            $table->integer("minute", false, true);
+            $table->integer("half", false, true);
+            $table->unsignedBigInteger("matchgame_id");
+            $table->unsignedBigInteger("player_id");
+            $table->foreign("matchgame_id")->references("id")->on("match_games");
+            $table->foreign("player_id")->references("id")->on("players");
+        });
+
+        Schema::create('match_goals', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer("minute", false, true);
+            $table->integer("half", false, true);
+            $table->unsignedBigInteger("matchgame_id");
+            $table->unsignedBigInteger("player_id");
+            $table->foreign("matchgame_id")->references("id")->on("match_games");
+            $table->foreign("player_id")->references("id")->on("players");
+        });
+
+        Schema::create('player_match_line_ups', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string("formationType", 512);
+            $table->string("playerBand", 512);
+            $table->unsignedBigInteger("matchgame_id");
+            $table->unsignedBigInteger("player_id");
+            $table->foreign("matchgame_id")->references("id")->on("match_games");
+            $table->foreign("player_id")->references("id")->on("players");
+        });
     }
 
     /**
@@ -49,8 +116,17 @@ class CampeonatoData extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('player_match_line_ups');
+        Schema::dropIfExists('match_goals');
+        Schema::dropIfExists('match_cards');
+        Schema::dropIfExists('match_games');
+
+        Schema::dropIfExists('team_phase_groups');
+        Schema::dropIfExists('phase_groups');
+        Schema::dropIfExists('phases');
+        Schema::dropIfExists('championships');
+
         Schema::dropIfExists('players');
         Schema::dropIfExists('teams');
-        Schema::dropIfExists('championships');
     }
 }

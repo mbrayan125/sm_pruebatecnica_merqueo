@@ -7,7 +7,7 @@ use Traversable;
 
 interface PersistenceInterface
 {
-    public static function retrieveEntities(
+    public static function findBy(
         string $classPath, 
         array $parameters = array(),
         array $orderBy = array(),
@@ -15,18 +15,17 @@ interface PersistenceInterface
         int $page = 1
     );
 
+    public static function findOneBy(
+        string $classPath, 
+        array $parameters = array(),
+        array $orderBy = array()
+    ): ?object;
 
-    /**
-     * \@pendiente_documentacion_stevin
-     *
-     * @param object $entity
-     *
-     * @return void
-     * @throws [type] Cuando ocurra alguna excepción en el procesamiento
-     *
-     * @author Stiven Mamián <brayan.mamian@makrosoft.co>
-     */
     public static function saveEntity(
+        object $entity
+    ) : void;
+
+    public static function refreshEntity(
         object $entity
     ) : void;
 }

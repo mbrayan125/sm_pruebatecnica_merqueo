@@ -2,34 +2,45 @@
 
 namespace App\Football\Models;
 
-use App\ProjectElements\Persistence\LaravelModel;
-use Illuminate\Database\Eloquent\Model;
+use App\ProjectElements\Models\AppModel;
 
-class Team extends LaravelModel
+class Team extends AppModel
 {
     /**
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $country;
+    protected $country;
 
     /**
      * @var string
      */
-    private $flag;
+    protected $flag;
 
     /**
      * @var int
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var string
      */
-    private $nationality;
+    protected $nationality;
+
+    /**
+     * @var array
+     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\Player", "inversedBy": "team_id", "mappedBy": "id"}
+     */
+    protected $players;
+
+    /**
+     * @var array
+     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\TeamPhaseGroup", "inversedBy": "team_id", "mappedBy": "id"}
+     */
+    protected $dataPhases;
 
 }

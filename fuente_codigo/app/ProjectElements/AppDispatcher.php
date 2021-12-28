@@ -2,7 +2,7 @@
 
 namespace App\ProjectElements;
 
-use App\ProjectElements\Persistence\LaravelPersistence;
+use App\ProjectElements\Persistence\EloquentPersistence;
 use App\ProjectElements\Persistence\MemoryPersistence;
 use App\ProjectHelpers\Files\LinuxFilesHelper;
 use App\ProjectInterfaces\Helpers\FilesHelperInterface;
@@ -25,7 +25,7 @@ class AppDispatcher
     private static $persistenceManager;
 
     /**
-     * @var \App\ProjectHelpers\Files\LinuxFilesHelper
+     * @var \App\ProjectInterfaces\Helpers\FilesHelperInterface
      */
     private static $filesHelper;
 
@@ -72,7 +72,7 @@ class AppDispatcher
         }
 
         if ($context == "prod") {
-            self::$persistenceManager = new LaravelPersistence();
+            self::$persistenceManager = new EloquentPersistence();
             self::$filesHelper = new LinuxFilesHelper();
         }
 

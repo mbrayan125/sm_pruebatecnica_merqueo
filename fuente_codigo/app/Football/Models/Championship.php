@@ -2,22 +2,39 @@
 
 namespace App\Football\Models;
 
-use App\ProjectElements\Persistence\LaravelModel;
+use App\ProjectElements\Models\AppModel;
 
-class Championship extends LaravelModel
+class Championship extends AppModel
 {
+    /**
+     * @var int
+     */
+    protected $id;
+    
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var int
      */
-    private $championshipYear;
+    protected $championshipYear;
 
     /**
      * @var int
      */
-    private $championshipMonth;
+    protected $championshipMonth;
+
+    /**
+     * @var object
+     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\Phase", "inversedBy": "championship_id", "mappedBy": "id"}
+     */
+    protected $phases;
+
+    /**
+     * @var object
+     * @relationship { "type": "one_to_many", "targetClass": "\\App\\Football\\Models\\MatchGame", "inversedBy": "championship_id", "mappedBy": "id"}
+     */
+    protected $matchGames;
 }

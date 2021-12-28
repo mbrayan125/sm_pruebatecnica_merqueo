@@ -5,6 +5,7 @@ namespace App\Football\Managers;
 use App\Football\Models\Team;
 use App\ProjectElements\AppDispatcher;
 use App\ProjectElements\Managers\ClassManager;
+use Exception;
 
 class TeamManager extends ClassManager
 {
@@ -20,23 +21,46 @@ class TeamManager extends ClassManager
         array $data
     ): object {
 
+        $persistenceManager = AppDispatcher::getPersistenceManager();
         self::checkDataItems(
-            self::$classPath, 
+            Team::class, 
             $data, 
             self::$mandatoryData
         );
+
         $data = (object) $data;
         $newTeamObject = new Team();
         $newTeamObject->setCountry($data->country);
         $newTeamObject->setFlag($data->flag);
         $newTeamObject->setRank($data->rank);
         $newTeamObject->setNationality($data->nationality);
+
+        $currentTeam = $persistenceManager::findBy(
+            Team::class,
+            array(
+                [ "country", "=", $newTeamObject->getCountry() ]
+            )
+        );
+        $teamsFound = sizeof($currentTeam);
+        if ($teamsFound > 0) {
+            throw new Exception(sprintf(
+                "Team %s already exists", 
+                $newTeamObject->getCountry()
+            ));
+        }
+
+        $finalFlagPath = self::moveOnFlagPath(
+            $newTeamObject->getFlag(), 
+            $newTeamObject->getCountry()
+        );
+        $newTeamObject->setFlag($finalFlagPath);
+
         return $newTeamObject;
     }
 
 
 
-    public static function moveOnFlagPath(
+    private static function moveOnFlagPath(
         string $originalPath,
         string $countryName
     ): string {

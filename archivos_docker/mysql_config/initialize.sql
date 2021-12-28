@@ -1,0 +1,1 @@
+create database prueba_tecnica character set utf8 collate utf8_unicode_ci;
